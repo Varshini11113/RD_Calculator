@@ -1,15 +1,10 @@
 import Head from "next/head";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import Input from "../Components/Input.jsx";
 import LineChart from "../Components/LineChart.jsx";
-import DoughnutChart from "@/Components/DoughnutChart.jsx";
 import CollapsibleBox from "@/Components/CollapsibleBox.jsx";
 import RelatedCalculator from "@/Components/RelatedCalculator.jsx";
 import styles from "../styles/Home.module.css"
-
-import { FaChartPie, FaChartLine } from "react-icons/fa";
-import { MdOutlineShowChart } from "react-icons/md";
 
 export default function Home() {
   const [totalInvestment, setTotalInvestment] = useState(100000);
@@ -69,7 +64,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>FD Calculator</title>
+        <title>RD Calculator</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com"  />
         <link rel="stylesheet" as="font" data-href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&amp;family=Rubik:wght@400;500;600&amp;display=swap" />
@@ -77,15 +72,10 @@ export default function Home() {
         <link rel="icon" href='./logo.png' />
       </Head>
 
-      <div
-        className={
-          "bg-bg_image w-full h-full bg-center bg-cover object-cover fixed"
-        }
-      />
 
       <main
         className={
-          "relative [@media(max-width:1200px)]:p-5 [@media(min-width:1200px)]:p-20 w-full overflow-x-hidden flex-col justify-between text-neutral-700 "
+         ` ${styles.main} ${"relative [@media(max-width:1200px)]:p-5 [@media(min-width:1200px)]:p-20 w-full overflow-x-hidden flex-col justify-between text-neutral-700 "}`
         }
       >
         <div>
@@ -94,17 +84,11 @@ export default function Home() {
               "text-zinc-900 text-5xl font-semibold text-center leading-tight [@media(max-width:300px)]:text-3xl"
             }
           >
-            <span className={"text-blue-600"}>FD</span>{" "}
+            <span className={"text-blue-600"}>RD</span>{" "}
             Calculator
           </div>
           <p className={"text-neutral-700 mt-3 [@media(min-width:200px)]:text-md [@media(max-width:300px)]:text-sm lg:text-lg text-center  "}>
-          Fixed deposit (FD) is a type of savings account that pays a fixed rate
-          of interest for a specified period of time. It is a safe and secure
-          investment option for those looking to save and grow their money.
-          Fixed deposits are a popular investment option in India due to their
-          stability and the guaranteed returns. They are suitable for
-          individuals looking for a low-risk investment option and for those
-          seeking to park their funds for a short or medium-term.
+          RD stands for Recurring Deposit. It is a type of savings account where the depositor makes regular fixed deposits over a specified period of time, usually ranging from 6 months to 10 years. The depositor is required to make a fixed deposit each month, and in return, the bank pays a higher interest rate on the deposit as compared to a regular savings account.
           </p>
         </div>
 
@@ -197,62 +181,17 @@ export default function Home() {
 
             {/* Chart */}
             <div className={"[@media(max-width:1000px)]:w-[100%] lg:w-[50%]"}>
-              
-              <div
-                className={
-                  " absolute flex flex-wrap z-10 place-content-center  w-[61px] h-[33px]  rounded-[30px] border-2 border-solid border-white bg-[#505C6227] shadow-md shadow-[#505C6227] backdrop-blur-[30px] m-0"
-                }
-              >
-                <button
-                  className={
-                    isLineChart
-                      ? " w-[23px] h-[23px] rounded-[50px] text-white bg-[#0161FF] border-2 border-solid border-white p-[2px] mx-[1px]"
-                      : " w-[23px] h-[23px] rounded-[50px] p-[2px] text-[#909090] mx-[1px]"
-                  }
-                  onClick={() => {
-                    setCheck(true);
-                  }}
-                >
-                  <MdOutlineShowChart />
-                </button>
-                <button
-                  className={
-                    isLineChart
-                      ? " w-[23px] h-[23px] rounded-[50px] p-[2px] text-[#909090] mx-[1px]"
-                      : " w-[23px] h-[23px] rounded-[50px] text-white bg-[#0161FF] border-2 border-solid border-white p-[2px] mx-[1px]"
-                  }
-                  onClick={() => {
-                    setCheck(false);
-                  }}
-                >
-                  <FaChartPie />
-                </button>
-              </div>
 
               {/* Charts/Graph */}
-              <div className={" relative object-right-top [@media(min-width:200px)]:h-auto md:w-[100%]"}>
-                {isLineChart ? (
-                  <>
-                    <LineChart points={graphPoints} />
-                    
-                  </>
-                ) : (
-                  <>
-                    <DoughnutChart
-                      totalInterest={estReturns}
-                      investmentAmount={totalInvestment}
-                      maturityValue={maturityValue}
-                    />
-                    
-                  </>
-                )}
+              <div className={" relative object-right-top [@media(min-width:200px)]:h-auto md:w-[100%]"}> 
+                <LineChart points={graphPoints} />
               </div>
 
               
               <div className={"flex-col "}>
                
                 <div className={"flex justify-between gap-2  font-medium mb-3 min-w-[230px] [@media(max-width:300px)]:flex-col "}>
-                  <div className={"[@media(max-width:300px)]:w-[170px] [@media(max-width:300px)]:text-center"} id="FD_output">Total Investment</div>
+                  <div className={"[@media(max-width:300px)]:w-[170px] [@media(max-width:300px)]:text-center"} id="RD_output">Total Investment</div>
                   <div className={"font-bold [@media(max-width:300px)]:w-[170px] [@media(max-width:300px)]:text-center"}>{`${'\u20B9'} ${totalInvestment.toLocaleString("en-In")}`}</div>
                 </div>
                 <div className={"flex justify-between gap-2 font-medium mb-3 min-w-[230px] [@media(max-width:300px)]:flex-col [@media(max-width:300px)]:pl-[20px]"}>
@@ -275,18 +214,18 @@ export default function Home() {
           >
             <div className={"font-bold "}>How to use this calculator?</div>
             <CollapsibleBox
-              heading={'Fixed Deposit'}
-              content={'Fixed deposit (FD) is a type of savings account that pays a fixed rate of interest for a specified period of time. They are suitable for individuals looking for a low-risk investment option.'}
+              heading={'Recurring  Deposit'}
+              content={'It is a type of savings account where the depositor makes regular fixed deposits over a specified period of time. The interest rate offered on recurring deposits is generally higher than that offered on savings accounts but lower than the interest rate offered on fixed deposits.'}
               isSidePanel={true}
             />
             <CollapsibleBox
-              heading={'Find out how much I can earn with FD'}
-              content={'Your FD returns depend on the interest rate offered by the bank or company and how long you plan to leave the deposit in.'}
+              heading={'Find out how much I can earn with RD'}
+              content={'You can use the FundsIndia RD calculator to calculate your RD returns in a matter of seconds.'}
               isSidePanel={true}
             />
             <CollapsibleBox
-              heading={'Tax Implications on FD'}
-              content={'The interest earned on fixed deposits (FDs)is taxable and the rate of tax depends on the individual\'s tax slab. The interest earned on an FD is added to the individual\'s total taxable income and is taxed as per their applicable tax slab.'}
+              heading={'Tax Implications on RD'}
+              content={'The interest earned on a Recurring Deposit (RD) is taxable. The rate of tax depends on the individual\'s tax slab.'}
               isSidePanel={true}
             />
             <CollapsibleBox
@@ -305,47 +244,47 @@ export default function Home() {
           }
         >
           <CollapsibleBox
-            heading={'What is Fixed Deposit?'}
+            heading={'What is Recurring  Deposit?'}
             headingBold = {true}
-            content={' Fixed deposit (FD) is a type of savings account that pays a fixed rate of interest for a specified period of time. It is a safe and secure investment option for those looking to save and grow their money. It is a popular investment option in India due to their stability and the guaranteed returns. They are suitable for individuals looking for a low-risk investment option.            '}
+            content={' It is a type of savings account where the depositor makes regular fixed deposits over a specified period of time, usually ranging from 6 months to 10 years. The depositor is required to make a fixed deposit each month, and in return, the bank pays a higher interest rate on the deposit as compared to a regular savings account. The interest rate offered on recurring deposits is generally higher than that offered on savings accounts but lower than the interest rate offered on fixed deposits.            '}
           />
 
           <CollapsibleBox
-            heading={'What is the lock-in period of FD investment?            '}
+            heading={'What is the lock-in period of RD investment?            '}
             headingBold = {true}
-            content={'FDs offered on FundsIndia have a typical lock-in period starting from 12 Months all the way up to 5 Years. It varies from partner to partner            '}
+            content={'The lock-in period of an RD is usually the same as the deposit period, which can range from 6 months to 10 years.'}
           />
 
           <CollapsibleBox
-            heading={'What is the minimum investment to book an FD?'}
+            heading={'What is the minimum investment to book an RD?'}
             headingBold = {true}
-            content={'The minimum investment of FDs varies from one partner to another. It starts from 5000 rupees.            '}
+            content={'The minimum investment of FDs  varies from one partner to another. It starts from 5000 rupees.'}
           />
 
           <CollapsibleBox
-            heading={'What are the tax implications of an FD investment?            '}
+            heading={'What are the tax implications of an RD investment?'}
             headingBold = {true}
-            content={'The interest earned on fixed deposits (FDs)is taxable and the rate of tax depends on the individual\'s tax slab. The interest earned on an FD is added to the individual\'s total taxable income and is taxed as per their applicable tax slab. Additionally, TDS (Tax Deducted at Source) is applicable on fixed deposit interest if the interest earned in a financial year is more than INR 40,000 for an individual or INR 50,000 for a Hindu Undivided Family (HUF). In such cases, TDS will be deducted at the rate of 10% before crediting the interest to the account.            '}
+            content={'The interest earned on a Recurring Deposit (RD) is taxable. The rate of tax depends on the individual\'s tax slab, and the interest earned is added to the individual\'s total taxable income. Additionally, TDS (Tax Deducted at Source) is applicable on RD interest if the interest earned in a financial year is more than INR 40,000 for an individual or INR 50,000 for a Hindu Undivided Family (HUF). In such cases, TDS will be deducted at the rate of 10% before crediting the interest to the account.'}
           />
 
           <CollapsibleBox
-            heading={'How can you use the FD calculator?            '}
+            heading={'How can you use the RD calculator?'}
             headingBold = {true}
             content={'This calculator is very intuitive as it only takes the amount you are investing, the tenure and interest rate and can give you the earnings at the time of maturity and also year on year growth via a graph.            '}
           />
           <CollapsibleBox
-            heading={'How does the FD calculator work?'}
+            heading={'How does the PPF calculator work?'}
             headingBold = {true}
             content={
-                "It uses the following logic The fixed deposit calculator for simple interest FD– M = P + (P x r x t/100), where – P is the principal amount that you deposit. r is the rate of interest per annum. t is the tenure in years."
+                "It uses the following logic A = P x (1 + r/100)^nt Where, A = Total amount by the end of the period P = Principal amount from which compounding will start r = Annual rate of interest n = number of times the interest compounds in a year t = number of years"                
             }
           />
 
           <CollapsibleBox
-            heading={'What happens if I break my FD?'}
+            heading={'What happens if I break my RD?'}
             headingBold = {true}
             content={
-              "Breaking of FD means to withdraw the deposit before maturity. This is not advisable as it leads to loss of interest and a penalty will be imposed. The penalty rate varies from partner to partner. Please read all documents carefully before investing."}
+              "Breaking of RD is withdrawing the deposit before maturity. This is not advisable as it leads to loss of interest and a penalty will be imposed. The penalty rate varies from partner to partner. Please read all documents carefully before investing."}
               isLast={true}
           />
         </div>
