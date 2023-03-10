@@ -1,10 +1,15 @@
 import Head from "next/head";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import Input from "../Components/Input.jsx";
 import LineChart from "../Components/LineChart.jsx";
+import DoughnutChart from "@/Components/DoughnutChart.jsx";
 import CollapsibleBox from "@/Components/CollapsibleBox.jsx";
 import RelatedCalculator from "@/Components/RelatedCalculator.jsx";
 import styles from "../styles/Home.module.css"
+
+import { FaChartPie, FaChartLine } from "react-icons/fa";
+import { MdOutlineShowChart } from "react-icons/md";
 
 export default function Home() {
   const [totalInvestment, setTotalInvestment] = useState(100000);
@@ -18,45 +23,41 @@ export default function Home() {
   
   useEffect(() => {
     console.log('myValue changed to:', maturityValue);
-    setMaturityValue(maturityValue);
-    calculateGraphPoints();
+    setEstReturns(Math.ceil(maturityValue - totalInvestment));
   }, [maturityValue]);
   useEffect(() => {
-    console.log('myValue changed to:', estReturns);
-    setEstReturns(estReturns);
     calculateGraphPoints();
   }, [estReturns]);
-  useEffect(() => {
-    console.log('myValue changed to:', interestRate);
-    setInterestRate(interestRate);
-    calculateGraphPoints();
-  }, [interestRate]);
-
-
 
   function calculate()  {
-    calculateGraphPoints();
-    // let cumulativeAmount: number = Number(totalInvestment);
-    // for (let i = 1; i <= timePeriod; i++) {
-    //   cumulativeAmount += (cumulativeAmount * interestRate) / 100;
-    // }
-    let cumulativeAmount: number = totalInvestment * Math.pow(1 + interestRate/100, 12*timePeriod);
-    // setMaturityValue(totalInvestment * Math.pow(1 + interestRate, timePeriod));
-    setEstReturns(Math.ceil(maturityValue - totalInvestment));
-    setMaturityValue(Math.ceil(cumulativeAmount));
-    setEstReturns(Math.ceil(maturityValue - totalInvestment));
-    calculateGraphPoints();
+    let cumulativeInterest = 0, totalAmt = 0;
+    for (let i = 1; i <= timePeriod*12; i++) {
+      totalAmt += totalInvestment;
+      cumulativeInterest += (totalInvestment * 1/12 * interestRate)/100;
+      if(i % 3 == 0){
+        totalAmt += cumulativeInterest;
+        cumulativeInterest = 0;
+      }
+    }
+    setMaturityValue(Math.ceil(totalAmt));
+    
   }
   
   function calculateGraphPoints()  {
     let points: number[] = [];
-    let cumulativeAmount: number = Number(totalInvestment);
-    for (let i = 1; i <= timePeriod; i++) {
-      points.push(cumulativeAmount); //[100000, 107000, 114490]
-      cumulativeAmount += Math.ceil((cumulativeAmount * interestRate) / 100);
+    let cumulativeInterest = 0, totalAmt = 0;
+    for (let i = 1; i <= timePeriod*12; i++) {
+      
+      points.push(totalAmt);
+      totalAmt += totalInvestment; 
+      cumulativeInterest += (totalInvestment * 1/12 * interestRate)/100;
+      if(i % 3 == 0){
+        totalAmt += cumulativeInterest;
+        cumulativeInterest = 0;
+      }
+      
     }
-    points.push(cumulativeAmount);
-    // setEstReturns(cumulativeAmount - totalInvestment);
+    points.push(totalAmt);
     setGraphPoints(points);
   }
   
@@ -72,10 +73,15 @@ export default function Home() {
         <link rel="icon" href='./logo.png' />
       </Head>
 
+      <div
+        className={
+          "bg-bg_image w-full h-full bg-center bg-cover object-cover fixed"
+        }
+      />
 
       <main
         className={
-         ` ${styles.main} ${"relative [@media(max-width:1200px)]:p-5 [@media(min-width:1200px)]:p-20 w-full overflow-x-hidden flex-col justify-between text-neutral-700 "}`
+          "relative [@media(max-width:1200px)]:p-5 [@media(min-width:1200px)]:p-20 w-full overflow-x-hidden flex-col justify-between text-neutral-700 "
         }
       >
         <div>
@@ -181,10 +187,12 @@ export default function Home() {
 
             {/* Chart */}
             <div className={"[@media(max-width:1000px)]:w-[100%] lg:w-[50%]"}>
+              
+              
 
               {/* Charts/Graph */}
-              <div className={" relative object-right-top [@media(min-width:200px)]:h-auto md:w-[100%]"}> 
-                <LineChart points={graphPoints} />
+              <div className={" relative object-right-top [@media(min-width:200px)]:h-auto md:w-[100%]"}>
+                    <LineChart points={graphPoints} />
               </div>
 
               
@@ -195,7 +203,7 @@ export default function Home() {
                   <div className={"font-bold [@media(max-width:300px)]:w-[170px] [@media(max-width:300px)]:text-center"}>{`${'\u20B9'} ${totalInvestment.toLocaleString("en-In")}`}</div>
                 </div>
                 <div className={"flex justify-between gap-2 font-medium mb-3 min-w-[230px] [@media(max-width:300px)]:flex-col [@media(max-width:300px)]:pl-[20px]"}>
-                  <div className={"[@media(max-width:300px)]:w-[130px] [@media(max-width:300px)]:text-center"} id="absoluteReturns">Estimated returns</div>
+                  <div className={"[@media(max-width:300px)]:w-[130px] [@media(max-width:300px)]:text-center"} id="absoluteReturns">Total interest</div>
                   <div className={"font-bold [@media(max-width:300px)]:w-[130px] [@media(max-width:300px)]:text-center"}>{`${'\u20B9'} ${estReturns.toLocaleString("en-In")}`}</div>
                 </div>
                 <div className={"flex justify-between gap-2 font-medium mb-3 min-w-[230px] [@media(max-width:300px)]:flex-col [@media(max-width:300px)]:pl-[20px]"}>
@@ -215,22 +223,22 @@ export default function Home() {
             <div className={"font-bold "}>How to use this calculator?</div>
             <CollapsibleBox
               heading={'Recurring  Deposit'}
-              content={'It is a type of savings account where the depositor makes regular fixed deposits over a specified period of time. The interest rate offered on recurring deposits is generally higher than that offered on savings accounts but lower than the interest rate offered on fixed deposits.'}
+              content={'It is a type of savings account where the depositor makes regular fixed deposits over a specified period of time. The interest rate offered on recurring deposits is generally higher than that offered on savings accounts but lower than the interest rate offered on fixed deposits.              '}
               isSidePanel={true}
             />
             <CollapsibleBox
               heading={'Find out how much I can earn with RD'}
-              content={'You can use the FundsIndia RD calculator to calculate your RD returns in a matter of seconds.'}
+              content={'	You can use the FundsIndia RD calculator to calculate your RD returns in a matter of seconds.              '}
               isSidePanel={true}
             />
             <CollapsibleBox
               heading={'Tax Implications on RD'}
-              content={'The interest earned on a Recurring Deposit (RD) is taxable. The rate of tax depends on the individual\'s tax slab.'}
+              content={'The interest earned on a Recurring Deposit (RD) is taxable. The rate of tax depends on the individual\'s tax slab.              '}
               isSidePanel={true}
             />
             <CollapsibleBox
               heading={'Premature withdrawal implications'}
-              content={'Premature withdrawal leads to loss of interest and a penalty will be imposed. The penalty rate varies from partner to partner.'}
+              content={'Premature withdrawal leads to loss of interest and a penalty will be imposed. The penalty rate varies from partner to partner.              '}
               isSidePanel={true}
               isLast ={true}
             />
@@ -246,37 +254,37 @@ export default function Home() {
           <CollapsibleBox
             heading={'What is Recurring  Deposit?'}
             headingBold = {true}
-            content={' It is a type of savings account where the depositor makes regular fixed deposits over a specified period of time, usually ranging from 6 months to 10 years. The depositor is required to make a fixed deposit each month, and in return, the bank pays a higher interest rate on the deposit as compared to a regular savings account. The interest rate offered on recurring deposits is generally higher than that offered on savings accounts but lower than the interest rate offered on fixed deposits.            '}
+            content={'It is a type of savings account where the depositor makes regular fixed deposits over a specified period of time, usually ranging from 6 months to 10 years. The depositor is required to make a fixed deposit each month, and in return, the bank pays a higher interest rate on the deposit as compared to a regular savings account. The interest rate offered on recurring deposits is generally higher than that offered on savings accounts but lower than the interest rate offered on fixed deposits.            '}
           />
 
           <CollapsibleBox
-            heading={'What is the lock-in period of RD investment?            '}
+            heading={'What is the lock-in period of RD investment?'}
             headingBold = {true}
-            content={'The lock-in period of an RD is usually the same as the deposit period, which can range from 6 months to 10 years.'}
+            content={'The lock-in period of an RD is usually the same as the deposit period, which can range from 6 months to 10 years.             '}
           />
 
           <CollapsibleBox
-            heading={'What is the minimum investment to book an RD?'}
+            heading={'What is the minimum investment to book an RD?            '}
             headingBold = {true}
-            content={'The minimum investment of FDs  varies from one partner to another. It starts from 5000 rupees.'}
+            content={'The minimum investment of FDs  varies from one partner to another. It starts from 5000 rupees.            '}
           />
 
           <CollapsibleBox
             heading={'What are the tax implications of an RD investment?'}
             headingBold = {true}
-            content={'The interest earned on a Recurring Deposit (RD) is taxable. The rate of tax depends on the individual\'s tax slab, and the interest earned is added to the individual\'s total taxable income. Additionally, TDS (Tax Deducted at Source) is applicable on RD interest if the interest earned in a financial year is more than INR 40,000 for an individual or INR 50,000 for a Hindu Undivided Family (HUF). In such cases, TDS will be deducted at the rate of 10% before crediting the interest to the account.'}
+            content={'The interest earned on a Recurring Deposit (RD) is taxable. The rate of tax depends on the individual\'s tax slab, and the interest earned is added to the individual\'s total taxable income. Additionally, TDS (Tax Deducted at Source) is applicable on RD interest if the interest earned in a financial year is more than INR 40,000 for an individual or INR 50,000 for a Hindu Undivided Family (HUF). In such cases, TDS will be deducted at the rate of 10% before crediting the interest to the account.            '}
           />
 
           <CollapsibleBox
             heading={'How can you use the RD calculator?'}
             headingBold = {true}
-            content={'This calculator is very intuitive as it only takes the amount you are investing, the tenure and interest rate and can give you the earnings at the time of maturity and also year on year growth via a graph.            '}
+            content={'This calculator is very intuitive as it only takes the amount you are investing, the tenure and interest rate and can give you the earnings at the time of maturity and also year on year growth via a graph.'}
           />
           <CollapsibleBox
-            heading={'How does the PPF calculator work?'}
+            heading={'How does the RD calculator work?'}
             headingBold = {true}
             content={
-                "It uses the following logic A = P x (1 + r/100)^nt Where, A = Total amount by the end of the period P = Principal amount from which compounding will start r = Annual rate of interest n = number of times the interest compounds in a year t = number of years"                
+                "It uses the following logic A = P x (1 + r/100)^nt Where, A = Total amount by the end of the period P = Principal amount from which compounding will start  r = Annual rate of interest n = number of times the interest compounds in a year t = number of years"
             }
           />
 
@@ -284,7 +292,7 @@ export default function Home() {
             heading={'What happens if I break my RD?'}
             headingBold = {true}
             content={
-              "Breaking of RD is withdrawing the deposit before maturity. This is not advisable as it leads to loss of interest and a penalty will be imposed. The penalty rate varies from partner to partner. Please read all documents carefully before investing."}
+              "Breaking of RD is withdrawing the deposit before maturity. This is not advisable as it leads to loss of interest and a penalty will be imposed. The penalty rate varies from partner to partner. Please read all documents carefully before investing.              "}
               isLast={true}
           />
         </div>
