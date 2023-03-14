@@ -19,10 +19,20 @@ export default function Chart({ points }) {
         xAxis: {
             // tickInterval: 2,
             labels: {
-                step: 1
+                step: 1,
+                style: {
+                    color: "#000000",
+                    opacity: 0.4,
+                    fontFamily: 'poppins',
+                    fontSize: '12px',
+                    fontWeight: 400,
+                },
             },
             gridLineWidth: 1,
             gridZIndex: 2,
+            allowDecimals: false,
+            tickLength: 0,
+            
         },
 
         yAxis: {
@@ -33,7 +43,13 @@ export default function Chart({ points }) {
             labels: {
                 enabled: false,
             },
-            gridLineColor: 'white',
+            gridLineColor: null,
+            style: {
+                fontFamily: 'poppins',
+                fontSize: '12px',
+                fontWeight: '400',
+                color: '#000000',},
+            
         },
 
         plotOptions: {
@@ -57,11 +73,9 @@ export default function Chart({ points }) {
             backgroundColor: '#FFFFFF',
             borderColor: '#FFFFFF',
             borderRadius: 20,
-            style: {
-                color: '#000000',
-            },
-            formatter() {
-                return `Amount <strong>\u20B9 ${Number(this.y.toFixed(0)).toLocaleString("en-In")}</strong> <br> Year <strong> ${this.x} </strong>`
+            useHTML: true,
+            formatter: function() {
+                return `<span style="color:#979797"> Amount    <span style="color:#1B1C20; font-weight: 600;">\u20B9 ${Number(this.y.toFixed(0)).toLocaleString("en-In")}</span> <br> Year    <span style="color:#1B1C20; font-weight: 600;"> ${this.x} </span> </span>`
             }
         },
 
@@ -90,7 +104,7 @@ export default function Chart({ points }) {
                 }
             })
         })
-    }, points);
+    }, [points]);
 
     return (
 
