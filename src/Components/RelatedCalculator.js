@@ -6,8 +6,11 @@ export default function RelatedCalculator({ name, path, first = false }) {
         style += ' ml-20 ';
     }
     return (
-        <div className={style}>
+        
+            <div className={style}>
             <Link href={path} className={'text-[#00D382] font-bold '}>{name}</Link>
         </div>
+
+        
     );
 }

@@ -108,7 +108,9 @@ export default function Chart({ points }) {
 
     return (
 
-        <HighchartsReact highcharts={Highcharts} options={options} />
+ 
+            <HighchartsReact highcharts={Highcharts} options={options} />
+        
 
     )
 }
