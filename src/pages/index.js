@@ -10,7 +10,6 @@ export default function Home() {
   const [dummyTotalInvestment, setDummyTotalInvestment] = useState(1000000);
   const [interestRate, setInterestRate] = useState(7);
   const [timePeriod, setTimePeriod] = useState(10);
-  const [isLineChart, setCheck] = useState(true);
   const [graphPoints, setGraphPoints] = useState([1246241, 2582035, 4013819, 5548489, 7193439, 8956593, 10846447, 12872103, 15043320, 17370560]);
   const [maturityValue, setMaturityValue] = useState(17370560);
   const [estReturns, setEstReturns] = useState(99596);
