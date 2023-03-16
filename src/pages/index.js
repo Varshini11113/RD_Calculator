@@ -81,6 +81,12 @@ export default function Home() {
         <link rel="icon" href='./logo.png' />
       </Head>
 
+      <div
+        className={
+          "bg-bg_image w-full h-full bg-center bg-cover object-cover fixed"
+        }
+      />
+      
       <main
         className={
           "relative font-['Poppins'] text-[14px] [@media(max-width:1200px)]:p-5 [@media(min-width:1200px)]:p-20 w-full overflow-x-hidden flex-col justify-between text-[#464143] "
