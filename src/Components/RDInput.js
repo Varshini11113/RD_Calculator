@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styles from '../styles/Input.module.scss'
+import styles from '../styles/RDInput.module.scss'
 export default function Input({ id, type = '', min = 0, max, step = 1, value, setValue }) {
 
     const [textValue, setTextValue] = useState(((type === 'rupees') ? '\u20B9' : '') + Number(value).toLocaleString("en-In") + ((type === 'percentage') ? '%' : ''));

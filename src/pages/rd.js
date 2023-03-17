@@ -1,9 +1,9 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import Input from "../Components/Input.js";
-import LineChart from "../Components/LineChart.js";
-import CollapsibleBox from "../Components/CollapsibleBox.js";
-import RelatedCalculator from "../Components/RelatedCalculator.js";
+import Input from "../Components/RDInput.js";
+import LineChart from "../Components/RDLineChart.js";
+import CollapsibleBox from "../Components/RDCollapsibleBox.js";
+import RelatedCalculator from "../Components/RDRelatedCalculator.js";
 
 export default function Home() {
   const [totalInvestment, setTotalInvestment] = useState(100000);
@@ -93,7 +93,7 @@ export default function Home() {
         }
       >
         <div className="app-bg-container overflow-hidden">
-        <div className="mt-[5rem]">
+        <div className="mt-[50px]">
           <div
             className={
               "text-[#000000] font-semibold text-[36px] text-center"
@@ -104,8 +104,6 @@ export default function Home() {
           </div>
           <p className={" mt-[10px] text-center leading-28"}>
            {/* leading 18 ensures line spacing of 18px because leading includes the height of characters too  */}
-
-          {/* <p className={"text-neutral-700 mt-3 [@media(min-width:200px)]:text-md [@media(max-width:300px)]:text-sm lg:text-lg text-center  "}> */}
           RD stands for Recurring Deposit. It is a type of savings account where the depositor makes regular fixed deposits over a specified period of time, usually ranging from 6 months to 10 years. The depositor is required to make a fixed deposit each month, and in return, the bank pays a higher interest rate on the deposit as compared to a regular savings account.
           </p>
         </div>
