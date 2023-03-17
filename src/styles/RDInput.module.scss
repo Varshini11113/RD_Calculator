@@ -87,6 +87,14 @@
 
 @media (min-width: 1200px) {
   .inputBox input[type="range"] {
-    min-width: 13.25rem;
+    min-width: 11.25rem; //new
   }
 }
+
+//new
+@media (min-width: 1366px) {
+  .inputBox input[type="range"] {
+    min-width: 13.25rem; 
+  }
+}
+
